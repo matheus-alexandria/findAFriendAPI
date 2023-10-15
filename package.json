@@ -1,0 +1,25 @@
+{
+  "name": "findafriendapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matheus-alexandria/findAFriendAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matheus-alexandria/findAFriendAPI/issues"
+  },
+  "homepage": "https://github.com/matheus-alexandria/findAFriendAPI#readme",
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "tsx": "^3.13.0",
+    "typescript": "^5.2.2"
+  }
+}
