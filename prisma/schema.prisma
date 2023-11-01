@@ -11,17 +11,34 @@ datasource db {
 }
 
 model Pet {
-  id                  String                @id @default(uuid())
-  about               String
-  age                 String
-  size                String
-  energy_level        String
-  independency_level  String
-  environment         String
+  id                 String @id @default(uuid())
+  about              String
+  age                String
+  size               String
+  energy_level       String
+  independency_level String
+  environment        String
+
+  organization        Organization          @relation(fields: [organization_id], references: [id])
   Picture             Picture[]
   AdoptionRequirement AdoptionRequirement[]
 
+  organization_id String
+
   @@map("pets")
+}
+
+model Organization {
+  id        String @id @default(uuid())
+  email     String @unique
+  cep       String
+  address   String
+  cellphone String
+  password  String
+
+  Pet Pet[]
+
+  @@map("organizations")
 }
 
 model Picture {
