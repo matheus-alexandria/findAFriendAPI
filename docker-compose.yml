@@ -7,5 +7,5 @@ services:
       - "5442:5432"
     environment:
       - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=apisolid
+      - POSTGRESQL_PASSWORD=findafriendapi
+      - POSTGRESQL_DATABASE=ffapi
