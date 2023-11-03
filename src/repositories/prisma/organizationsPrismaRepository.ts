@@ -1,8 +1,12 @@
-import { Prisma } from "@prisma/client";
+import { Organization, Prisma } from "@prisma/client";
 import { OrganizationRepository } from "../organizationsRepository";
 import { prisma } from "../../lib/prisma";
 
 export class OrganizationsPrismaRepository implements OrganizationRepository {
+  async findById(organizationId: string): Promise<Organization | null> {
+    return prisma.organization.findUnique({ where: { id: organizationId }});
+  }
+
   async findByEmail(email: string) {
     return prisma.organization.findUnique({
       where: {
