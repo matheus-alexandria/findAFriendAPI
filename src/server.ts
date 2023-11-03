@@ -27,6 +27,6 @@ server.listen(
     port: env.PORT, 
     host: '0.0.0.0' 
   }, () => {
-    console.log("FindAFriend API Online")
+    console.log(`FindAFriend API Online on port ${env.PORT}`)
   }
 )
