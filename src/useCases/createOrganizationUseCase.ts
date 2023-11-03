@@ -1,5 +1,6 @@
 import { Organization } from "@prisma/client";
 import { OrganizationRepository } from "../repositories/organizationsRepository";
+import { hash } from 'bcryptjs';
 
 export class CreateOrganizationUseCase {
   constructor(private organizationsRepository: OrganizationRepository) {}
@@ -17,12 +18,14 @@ export class CreateOrganizationUseCase {
       throw new Error('Organization already exists.');
     }
 
+    const passwordEncrypt = await hash(password, 6);
+
     const organization = await this.organizationsRepository.create({
       email,
       cep,
       address,
       cellphone,
-      password
+      password: passwordEncrypt
     });
 
     return {
