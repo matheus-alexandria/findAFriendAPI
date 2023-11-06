@@ -2,10 +2,19 @@ import fastify from "fastify";
 import { env } from "./env";
 import { routes } from "./routes/index.routes";
 import { ZodError } from "zod";
+import fastifyJwt from "@fastify/jwt";
 
 const server = fastify();
 
+server.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+  sign: {
+    expiresIn: '7d'
+  }
+});
+
 server.register(routes);
+
 
 server.setErrorHandler((error, _, response) => {
   if (error instanceof ZodError) {
