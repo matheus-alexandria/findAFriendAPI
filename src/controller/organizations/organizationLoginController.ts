@@ -19,7 +19,7 @@ export class OrganizationLoginController {
 
     const token = res.jwtSign({}, {
       sub: organization.id
-    })
+    });
 
     return res.send({
       token
