@@ -18,6 +18,14 @@ export class OrganizationsPrismaRepository implements OrganizationRepository {
   async create(data: Prisma.OrganizationCreateInput) {
     const organzation = await prisma.organization.create({
       data,
+      select: {
+        id: true,
+        email: true,
+        cep: true,
+        address: true,
+        cellphone: true,
+        password: false
+      }
     });
 
     return organzation;
