@@ -22,10 +22,9 @@ export class CreateOrganizationController {
     } = createOrgRequestSchema.parse(request.body);
 
     const organizationsPrismaRepository = new OrganizationsPrismaRepository();
-
     const createOrganizationUseCase = new CreateOrganizationUseCase(organizationsPrismaRepository);
 
-    const organization = await createOrganizationUseCase.execute({
+    const { organization } = await createOrganizationUseCase.execute({
       email,
       cep,
       address,
@@ -33,6 +32,13 @@ export class CreateOrganizationController {
       password
     });
 
-    return response.send(organization);
+    const token = response.jwtSign({}, {
+      sub: organization.id
+    });
+
+    return response.send({
+      token,
+      organization
+    });
   }
 }
