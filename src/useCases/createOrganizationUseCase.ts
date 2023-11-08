@@ -43,5 +43,5 @@ interface CreateOrganizationUseCaseRequest {
 }
 
 interface CreateOrganizationUseCaseResponse {
-  organization: Organization;
+  organization: Omit<Organization, 'password'>;
 }
