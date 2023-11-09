@@ -32,7 +32,7 @@ export class CreateOrganizationController {
       password
     });
 
-    const token = response.jwtSign({}, {
+    const token = await response.jwtSign({}, {
       sub: organization.id
     });
 
