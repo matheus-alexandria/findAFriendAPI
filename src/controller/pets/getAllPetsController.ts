@@ -6,13 +6,15 @@ import { z } from "zod";
 export class GetAllPetsController {
   async handle(req: FastifyRequest, res: FastifyReply) {
     const getAllPetsQuerySchema = z.object({
-      age: z.enum(['filhote', 'adulto', 'idoso']),
-      size: z.enum(['pequeno', 'medio', 'grande']),
+      age: z.enum(['filhote', 'adulto', 'idoso']).optional(),
+      size: z.enum(['pequeno', 'medio', 'grande']).optional(),
+      energyLevel: z.enum(['baixa', 'media', 'alta']).optional(),
     });
 
     const {
       age,
-      size
+      size,
+      energyLevel
     } = getAllPetsQuerySchema.parse(req.query);
 
     const petsRepository = new PetsPrismaRepository();
@@ -20,7 +22,8 @@ export class GetAllPetsController {
 
     const { pets } = await getAllPetsUseCase.execute({
       age, 
-      size
+      size,
+      energyLevel
     });
 
     return res.send({
