@@ -1,9 +1,6 @@
 import { Pet, Prisma } from "@prisma/client";
 
-export interface PetFilters {
-  age?: string;
-  size?: string;
-}
+export type PetFilters = Partial<Omit<Pet, 'id'>>;
 
 export interface PetsRepository {
   getAllByFilters(filters?: PetFilters): Promise<Pet[]>;
