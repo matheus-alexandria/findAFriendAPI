@@ -6,10 +6,11 @@ export class GetAllPetsUseCase {
     private petsRepository: PetsRepository
   ) {}
 
-  async execute({ age, size }: GetAllPetsUseCaseRequest): Promise<GetAllPetsUseCaseResponse> {
+  async execute({ age, size, energyLevel }: GetAllPetsUseCaseRequest): Promise<GetAllPetsUseCaseResponse> {
     const pets = await this.petsRepository.getAllByFilters({
       age,
       size,
+      energy_level: energyLevel
     });
 
     if (!pets.length) {
@@ -23,8 +24,9 @@ export class GetAllPetsUseCase {
 }
 
 interface GetAllPetsUseCaseRequest {
-  age: string;
-  size: string;
+  age?: string;
+  size?: string;
+  energyLevel?: string;
 }
 
 interface GetAllPetsUseCaseResponse {
