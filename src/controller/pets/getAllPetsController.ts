@@ -9,12 +9,16 @@ export class GetAllPetsController {
       age: z.enum(['filhote', 'adulto', 'idoso']).optional(),
       size: z.enum(['pequeno', 'medio', 'grande']).optional(),
       energyLevel: z.enum(['baixa', 'media', 'alta']).optional(),
+      independencyLevel: z.enum(['baixa', 'media', 'alta']),
+      environment: z.enum(['casa', 'apartamento', 'aberto']),
     });
 
     const {
       age,
       size,
-      energyLevel
+      energyLevel,
+      independencyLevel,
+      environment
     } = getAllPetsQuerySchema.parse(req.query);
 
     const petsRepository = new PetsPrismaRepository();
@@ -23,7 +27,9 @@ export class GetAllPetsController {
     const { pets } = await getAllPetsUseCase.execute({
       age, 
       size,
-      energyLevel
+      energyLevel,
+      independencyLevel,
+      environment
     });
 
     return res.send({
