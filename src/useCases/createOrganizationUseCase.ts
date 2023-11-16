@@ -1,6 +1,7 @@
 import { Organization } from "@prisma/client";
 import { OrganizationRepository } from "../repositories/organizationsRepository";
 import { hash } from 'bcryptjs';
+import { brazilianStateAcronyms } from "../@types/stateAcronyms";
 
 export class CreateOrganizationUseCase {
   constructor(private organizationsRepository: OrganizationRepository) {}
@@ -9,6 +10,7 @@ export class CreateOrganizationUseCase {
     email,
     cep,
     address,
+    state,
     cellphone,
     password
   }: CreateOrganizationUseCaseRequest): Promise<CreateOrganizationUseCaseResponse> {
@@ -18,12 +20,17 @@ export class CreateOrganizationUseCase {
       throw new Error('Organization already exists.');
     }
 
+    if (!(state in brazilianStateAcronyms)) {
+      throw new Error('Not a valid state acronym to save at the database');
+    }
+
     const passwordEncrypt = await hash(password, 6);
 
     const organization = await this.organizationsRepository.create({
       email,
       cep,
       address,
+      state,
       cellphone,
       password: passwordEncrypt
     });
@@ -38,6 +45,7 @@ interface CreateOrganizationUseCaseRequest {
   email: string;
   cep: string;
   address: string;
+  state: string;
   cellphone: string;
   password: string;
 }
