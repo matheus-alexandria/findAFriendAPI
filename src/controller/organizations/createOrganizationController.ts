@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import { OrganizationsPrismaRepository } from "../../repositories/prisma/organizationsPrismaRepository";
 import { CreateOrganizationUseCase } from "../../useCases/createOrganizationUseCase";
 
@@ -9,7 +9,7 @@ export class CreateOrganizationController {
       const createOrgRequestSchema = z.object({
         email: z.string().email(),
         cep: z.string().max(8).min(8),
-        address: z.string(),
+        address: z.string().refine((value) => value.split("-").length > 1 ),
         cellphone: z.string().max(11),
         password: z.string().min(6),
       });
@@ -21,6 +21,8 @@ export class CreateOrganizationController {
         cellphone,
         password
       } = createOrgRequestSchema.parse(request.body);
+
+      const state = address.split('-').pop()?.trim();
   
       const organizationsPrismaRepository = new OrganizationsPrismaRepository();
       const createOrganizationUseCase = new CreateOrganizationUseCase(organizationsPrismaRepository);
@@ -29,6 +31,7 @@ export class CreateOrganizationController {
         email,
         cep,
         address,
+        state: state ?? "",
         cellphone,
         password
       });
@@ -47,6 +50,8 @@ export class CreateOrganizationController {
           message: err.message
         });
       }
+
+      throw err;
     }
   }
 }
