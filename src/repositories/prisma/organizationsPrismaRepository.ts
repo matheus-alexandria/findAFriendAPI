@@ -23,6 +23,7 @@ export class OrganizationsPrismaRepository implements OrganizationRepository {
         email: true,
         cep: true,
         address: true,
+        state: true,
         cellphone: true,
         password: false
       }
