@@ -33,6 +33,7 @@ model Organization {
   email     String @unique
   cep       String
   address   String
+  state     String @default("CE")
   cellphone String
   password  String
 
