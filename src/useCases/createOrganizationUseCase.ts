@@ -20,7 +20,7 @@ export class CreateOrganizationUseCase {
       throw new Error('Organization already exists.');
     }
 
-    if (!(state in brazilianStateAcronyms)) {
+    if (!brazilianStateAcronyms.includes(state)) {
       throw new Error('Not a valid state acronym to save at the database');
     }
 
