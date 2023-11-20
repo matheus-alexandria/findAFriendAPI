@@ -9,7 +9,5 @@ export async function routes(app: FastifyInstance) {
     prefix: '/org'
   });
 
-  app.register(petRoutes, {
-    prefix: '/pet'
-  });
+  app.register(petRoutes);
 }
