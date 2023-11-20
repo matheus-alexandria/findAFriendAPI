@@ -7,16 +7,13 @@ import { GetAllPetsByStateController } from "./getAllPetsByStateController";
 
 export async function petRoutes(app: FastifyInstance) {
   const createPetController = new CreatePetController();
-  app.post('/', {
+  app.post('/pet', {
     preHandler: [authenticateToken]
   }, createPetController.handle);
 
   const getAllPetsController = new GetAllPetsController();
-  app.get('/', getAllPetsController.handle);
+  app.get('/pets/:state', getAllPetsController.handle);
 
   const findPetController = new FindPetController();
-  app.get('/:petId', findPetController.handle);
-
-  const getAllPetsStateController = new GetAllPetsByStateController();
-  app.get('/:state', getAllPetsStateController.handle);
+  app.get('/pet/:petId', findPetController.handle);
 }
