@@ -7,15 +7,18 @@ export class GetAllPetsUseCase {
   ) {}
 
   async execute({ 
-    age, size, energyLevel, environment, independencyLevel 
+    state, age, size, energyLevel, environment, independencyLevel 
   }: GetAllPetsUseCaseRequest): Promise<GetAllPetsUseCaseResponse> {
-    const pets = await this.petsRepository.getAllByFilters({
-      age,
-      size,
-      energy_level: energyLevel,
-      environment,
-      independency_level: independencyLevel
-    });
+    const pets = await this.petsRepository.findMany(
+      state,
+      {
+        age,
+        size,
+        energy_level: energyLevel,
+        environment,
+        independency_level: independencyLevel
+      }
+    );
 
     if (!pets.length) {
       throw new Error('No pets found with the given filters.')
@@ -28,6 +31,7 @@ export class GetAllPetsUseCase {
 }
 
 interface GetAllPetsUseCaseRequest {
+  state: string;
   age?: string;
   size?: string;
   energyLevel?: string;
