@@ -12,21 +12,14 @@ export class PetsPrismaRepository implements PetsRepository {
     return pet;
   }
 
-  async findManyByState(state: string): Promise<Pet[]> {
+  async findMany(state: string, filters?: PetFilters): Promise<Pet[]> {
     const pets = await prisma.pet.findMany({
       where: {
+        ...filters,
         organization: {
           state
         }
       }
-    });
-
-    return pets;
-  }
-
-  async getAllByFilters(filters?: PetFilters): Promise<Pet[]> {
-    const pets = await prisma.pet.findMany({
-      where: filters
     });
 
     return pets;
