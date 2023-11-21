@@ -10,7 +10,7 @@ export class CreateOrganizationController {
         email: z.string().email(),
         cep: z.string().max(8).min(8),
         address: z.string().refine((value) => value.split("-").length > 1 ),
-        cellphone: z.string().max(11),
+        cellphone: z.string().regex(/^\+\d{1,4}\d{1,14}$/),
         password: z.string().min(6),
       });
   
