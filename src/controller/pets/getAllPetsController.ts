@@ -5,35 +5,52 @@ import { z } from "zod";
 
 export class GetAllPetsController {
   async handle(req: FastifyRequest, res: FastifyReply) {
-    const getAllPetsQuerySchema = z.object({
-      age: z.enum(['filhote', 'adulto', 'idoso']).optional(),
-      size: z.enum(['pequeno', 'medio', 'grande']).optional(),
-      energyLevel: z.enum(['baixa', 'media', 'alta']).optional(),
-      independencyLevel: z.enum(['baixa', 'media', 'alta']),
-      environment: z.enum(['casa', 'apartamento', 'aberto']),
-    });
+    try {
+      const getPetsByStateRouteSchema = z.object({
+        state: z.string(),
+      });
+  
+      const { state } = getPetsByStateRouteSchema.parse(req.params);
+  
+      const getAllPetsQuerySchema = z.object({
+        age: z.enum(['filhote', 'adulto', 'idoso']).optional(),
+        size: z.enum(['pequeno', 'medio', 'grande']).optional(),
+        energyLevel: z.enum(['baixa', 'media', 'alta']).optional(),
+        independencyLevel: z.enum(['baixa', 'media', 'alta']).optional(),
+        environment: z.enum(['casa', 'apartamento', 'aberto']).optional(),
+      });
+  
+      const {
+        age,
+        size,
+        energyLevel,
+        independencyLevel,
+        environment
+      } = getAllPetsQuerySchema.parse(req.query);
+  
+      const petsRepository = new PetsPrismaRepository();
+      const getAllPetsUseCase = new GetAllPetsUseCase(petsRepository);
+  
+      const { pets } = await getAllPetsUseCase.execute({
+        state,
+        age, 
+        size,
+        energyLevel,
+        independencyLevel,
+        environment
+      });
+  
+      return res.send({
+        pets
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(404).send({
+          message: err.message,
+        });
+      }
 
-    const {
-      age,
-      size,
-      energyLevel,
-      independencyLevel,
-      environment
-    } = getAllPetsQuerySchema.parse(req.query);
-
-    const petsRepository = new PetsPrismaRepository();
-    const getAllPetsUseCase = new GetAllPetsUseCase(petsRepository);
-
-    const { pets } = await getAllPetsUseCase.execute({
-      age, 
-      size,
-      energyLevel,
-      independencyLevel,
-      environment
-    });
-
-    return res.send({
-      pets
-    });
+      throw err;
+    }
   }
 }
