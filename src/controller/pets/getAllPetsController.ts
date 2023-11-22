@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { GetAllPetsUseCase } from "../../useCases/getAllPetsUseCase";
 import { PetsPrismaRepository } from "../../repositories/prisma/petsPrismaRepository";
 import { z } from "zod";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class GetAllPetsController {
   async handle(req: FastifyRequest, res: FastifyReply) {
@@ -44,7 +45,7 @@ export class GetAllPetsController {
         pets
       });
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof NotFoundError) {
         return res.status(404).send({
           message: err.message,
         });

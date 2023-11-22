@@ -1,5 +1,6 @@
 import { Pet } from "@prisma/client";
 import { PetsRepository } from "../repositories/petsRepository";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class GetAllPetsUseCase {
   constructor(
@@ -21,7 +22,7 @@ export class GetAllPetsUseCase {
     );
 
     if (!pets.length) {
-      throw new Error('No pets found with the given filters.')
+      throw new NotFoundError('No pets found with the given filters.')
     }
 
     return {
