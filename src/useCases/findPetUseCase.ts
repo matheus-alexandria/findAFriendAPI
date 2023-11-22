@@ -1,5 +1,6 @@
 import { Pet } from "@prisma/client";
 import { PetsRepository } from "../repositories/petsRepository";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class FindPetUseCase {
   constructor(
@@ -10,7 +11,7 @@ export class FindPetUseCase {
     const pet = await this.petsRepostirory.findById(petId);
 
     if (!pet) {
-      throw new Error('No pet registered with this id.')
+      throw new NotFoundError('No pet registered with this id.')
     }
 
     return {

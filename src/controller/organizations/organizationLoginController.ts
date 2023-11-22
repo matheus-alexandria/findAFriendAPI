@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { OrganizationsPrismaRepository } from "../../repositories/prisma/organizationsPrismaRepository";
 import { OrganizationLoginUseCase } from "../../useCases/organizationLoginUseCase";
+import { NotAuthorized } from "../../errors/NotAuthorizedError";
 
 export class OrganizationLoginController {
   async handle(req: FastifyRequest, res: FastifyReply) {
@@ -27,7 +28,7 @@ export class OrganizationLoginController {
         token
       });
     } catch(err) {
-      if (err instanceof Error) {
+      if (err instanceof NotAuthorized) {
         return res.status(401).send({
           message: err.message
         });

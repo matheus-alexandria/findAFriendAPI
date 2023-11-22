@@ -3,6 +3,7 @@ import { z } from "zod";
 import { CreatePetUseCase } from "../../useCases/createPetUseCase";
 import { OrganizationsPrismaRepository } from "../../repositories/prisma/organizationsPrismaRepository";
 import { PetsPrismaRepository } from "../../repositories/prisma/petsPrismaRepository";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class CreatePetController {
   async handle(req: FastifyRequest, res: FastifyReply) {
@@ -46,7 +47,7 @@ export class CreatePetController {
   
       return res.send(pet);
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof NotFoundError) {
         return res.status(400).send({
           message: err.message
         });

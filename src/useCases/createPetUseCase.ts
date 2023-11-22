@@ -1,6 +1,7 @@
 import { Pet } from "@prisma/client";
 import { PetsRepository } from "../repositories/petsRepository";
 import { OrganizationRepository } from "../repositories/organizationsRepository";
+import { NotFoundError } from "../errors/NotFoundError";
 
 export class CreatePetUseCase {
   constructor(
@@ -20,7 +21,7 @@ export class CreatePetUseCase {
     const org = await this.organizationsRepository.findById(organizationId);
 
     if (!org) {
-      throw new Error('Organization not found.');
+      throw new NotFoundError('Organization not found.');
     }
 
     const pet = await this.petsRepository.create({

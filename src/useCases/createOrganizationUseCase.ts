@@ -2,6 +2,7 @@ import { Organization } from "@prisma/client";
 import { OrganizationRepository } from "../repositories/organizationsRepository";
 import { hash } from 'bcryptjs';
 import { brazilianStateAcronyms } from "../@types/stateAcronyms";
+import { UseCaseError } from "../errors/UseCaseError";
 
 export class CreateOrganizationUseCase {
   constructor(private organizationsRepository: OrganizationRepository) {}
@@ -17,11 +18,11 @@ export class CreateOrganizationUseCase {
     const foundOrganization = await this.organizationsRepository.findByEmail(email);
 
     if (foundOrganization) {
-      throw new Error('Organization already exists.');
+      throw new UseCaseError('Organization already exists.');
     }
 
     if (!brazilianStateAcronyms.includes(state)) {
-      throw new Error('Not a valid state acronym to save at the database');
+      throw new UseCaseError('Not a valid state acronym to save at the database');
     }
 
     const passwordEncrypt = await hash(password, 6);

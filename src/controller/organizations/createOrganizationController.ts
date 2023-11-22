@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { ZodError, z } from "zod";
 import { OrganizationsPrismaRepository } from "../../repositories/prisma/organizationsPrismaRepository";
 import { CreateOrganizationUseCase } from "../../useCases/createOrganizationUseCase";
+import { UseCaseError } from "../../errors/UseCaseError";
 
 export class CreateOrganizationController {
   async handle(request: FastifyRequest, response: FastifyReply) {
@@ -45,7 +46,7 @@ export class CreateOrganizationController {
         organization
       });
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof UseCaseError) {
         return response.status(400).send({
           message: err.message
         });

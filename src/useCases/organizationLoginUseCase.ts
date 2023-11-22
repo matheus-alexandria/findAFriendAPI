@@ -1,6 +1,7 @@
 import { Organization } from "@prisma/client";
 import { OrganizationRepository } from "../repositories/organizationsRepository";
 import { compare } from 'bcryptjs';
+import { NotAuthorized } from "../errors/NotAuthorizedError";
 
 export class OrganizationLoginUseCase {
   constructor(
@@ -11,13 +12,13 @@ export class OrganizationLoginUseCase {
     const organization = await this.organizationsRepository.findByEmail(email);
 
     if (!organization) {
-      throw new Error('Wrong credentials.');
+      throw new NotAuthorized('Wrong credentials.');
     }
 
     const isPasswordValid = await compare(password, organization.password);
 
     if (!isPasswordValid) {
-      throw new Error('Wrong credentials.');
+      throw new NotAuthorized('Wrong credentials.');
     }
 
     return {
